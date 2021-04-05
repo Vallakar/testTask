@@ -1,0 +1,24 @@
+version: '3.1'
+
+volumes:
+  postgres_volume:
+  mysql_volume:
+
+
+services:
+
+  dbpostgres:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 987654321
+      POSTGRES_DB: BaseA
+      volumes:
+        - postgres_volume:/var/lib/postgresql/data
+  dbmusql:
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: example
