@@ -1,5 +1,6 @@
 import psycopg2
 from psycopg2 import Error
+import mysql.connector
 
 try:
     # Подключение к существующей базе данных
@@ -33,7 +34,7 @@ try:
     create_table_query = '''CREATE TABLE Cost
                               (ID serial PRIMARY KEY     NOT NULL,
                               name           TEXT    NOT NULL,                              
-                              PRICE         REAL NOT NULL); '''
+                              PRICE         INT NOT NULL); '''
     cursor.execute(create_table_query)
     create_table_query = '''CREATE TABLE Products
                           (ID serial PRIMARY KEY     NOT NULL,
@@ -53,3 +54,34 @@ finally:
         cursor.close()
         connection.close()
         print("Соединение с PostgreSQL закрыто")
+
+
+try:
+    with connect(
+            host="localhost",
+            port="3306",
+          #  user=input("Имя пользователя: "),
+            password=getpass("987654321"),
+            database="BaseB",
+    ) as connection:
+        print(connection)
+
+    create_table_query = '''CREATE TABLE Cost
+                                  (ID INT AUTO_INCREMENT PRIMARY KEY     NOT NULL,
+                                  name           TEXT    NOT NULL,                              
+                                  PRICE         INT NOT NULL); '''
+    with connection.cursor() as cursor:
+        cursor.execute(create_table_query)
+        connection.commit()
+    create_table_query = '''CREATE TABLE Products
+                              (ID INT AUTO_INCREMENT PRIMARY KEY     NOT NULL,
+                              name           TEXT    NOT NULL,
+                              status         TEXT    NOT NULL,
+                              quantity      INT NOT NULL,
+                              priceId       INT,
+                              FOREIGN KEY(priceId) REFERENCES Cost(ID)); '''
+    with connection.cursor() as cursor:
+        cursor.execute(create_table_query)
+        connection.commit()
+except:
+    print("SQL er")

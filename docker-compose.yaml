@@ -19,9 +19,16 @@ services:
       POSTGRES_PASSWORD: 987654321
       POSTGRES_DB: BaseA
 
-  dbmusql:
+  dbmysql:
     image: mysql
     command: --default-authentication-plugin=mysql_native_password
     restart: always
+    volumes:
+    - mysql_volume:/var/lib/mysql
+    ports:
+    - "3306:3306"
     environment:
-      MYSQL_ROOT_PASSWORD: example
+      MYSQL_USER: testuser
+      MYSQL_USER_PASSWORD: 9876543211
+      MYSQL_ROOT_PASSWORD: 987654321
+      MYSQL_DATABASE: BaseB
