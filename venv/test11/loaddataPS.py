@@ -10,11 +10,13 @@ try:
     # Курсор для выполнения операций с базой данных
     cursor = connection.cursor()
     letters = string.ascii_letters
+    # Вычищение базы от старых данных
     cursor.execute("truncate  Products CASCADE")
     cursor.execute("truncate  Cost CASCADE")
     cursor.execute("ALTER SEQUENCE Cost_ID_seq RESTART WITH 1")
     cursor.execute("ALTER SEQUENCE Products_ID_seq RESTART WITH 1")
 
+    # заполнение случайными данными
     for i in range(20):
         result_name = ''.join(random.choice(letters) for j in range(8))
         result_price = random.randint(100, 100000)
@@ -30,7 +32,8 @@ try:
         cursor.execute(insert_query, item_tuple)
         connection.commit()
 
-    for i in range(30):
+    # вывод заполненных данных для проверки корректности заполнения
+    for i in range(20):
         cursor.execute("SELECT * from Cost WHERE ID = %s", (i+1,))
         record = cursor.fetchall()
         print("Результат postgres", record)
