@@ -3,32 +3,8 @@ from psycopg2 import Error
 import mysql.connector
 
 try:
-    # Подключение к существующей базе данных
-    connection = psycopg2.connect(user="postgres", password="987654321", host="localhost", port="5432", database="BaseA")
-    # Курсор для выполнения операций с базой данных
-    cursor = connection.cursor()
-    # Распечатать сведения о PostgreSQL
-    print("Информация о сервере PostgreSQL")
-    print(connection.get_dsn_parameters(), "\n")
-    # Выполнение SQL-запроса
-    cursor.execute("SELECT version();")
-    # Получить результат
-    record = cursor.fetchone()
-    print("Вы подключены к - ", record, "\n")
-
-except (Exception, Error) as error:
-    print("Ошибка при работе с PostgreSQL", error)
-finally:
-    if connection:
-        cursor.close()
-        connection.close()
-        print("Соединение с PostgreSQL закрыто")
-
-try:
     # Подключиться к существующей базе данных
     connection = psycopg2.connect(user="postgres", password="987654321", host="localhost", port="5432", database="BaseA")
-
-    # Создайте курсор для выполнения операций с базой данных
     cursor = connection.cursor()
     # SQL-запрос для создания новой таблицы
     create_table_query = '''CREATE TABLE Cost
@@ -42,7 +18,6 @@ try:
                           status         TEXT    NOT NULL,
                           quantity      integer NOT NULL,
                           priceId       INTEGER REFERENCES     Cost (ID) ); '''
-    # Выполнение команды: это создает новую таблицу
     cursor.execute(create_table_query)
     connection.commit()
     print("Таблица успешно создана в PostgreSQL")
@@ -54,34 +29,3 @@ finally:
         cursor.close()
         connection.close()
         print("Соединение с PostgreSQL закрыто")
-
-
-try:
-    with connect(
-            host="localhost",
-            port="3306",
-          #  user=input("Имя пользователя: "),
-            password=getpass("987654321"),
-            database="BaseB",
-    ) as connection:
-        print(connection)
-
-    create_table_query = '''CREATE TABLE Cost
-                                  (ID INT AUTO_INCREMENT PRIMARY KEY     NOT NULL,
-                                  name           TEXT    NOT NULL,                              
-                                  PRICE         INT NOT NULL); '''
-    with connection.cursor() as cursor:
-        cursor.execute(create_table_query)
-        connection.commit()
-    create_table_query = '''CREATE TABLE Products
-                              (ID INT AUTO_INCREMENT PRIMARY KEY     NOT NULL,
-                              name           TEXT    NOT NULL,
-                              status         TEXT    NOT NULL,
-                              quantity      INT NOT NULL,
-                              priceId       INT,
-                              FOREIGN KEY(priceId) REFERENCES Cost(ID)); '''
-    with connection.cursor() as cursor:
-        cursor.execute(create_table_query)
-        connection.commit()
-except:
-    print("SQL er")

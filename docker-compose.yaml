@@ -30,5 +30,5 @@ services:
     environment:
       MYSQL_USER: testuser
       MYSQL_USER_PASSWORD: 9876543211
-      MYSQL_ROOT_PASSWORD: 987654321
+      MYSQL_ROOT_PASSWORD: paS$w0rd
       MYSQL_DATABASE: BaseB

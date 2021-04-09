@@ -9,14 +9,6 @@ try:
     connection = psycopg2.connect(user="postgres", password="987654321", host="localhost", port="5432", database="BaseA")
     # Курсор для выполнения операций с базой данных
     cursor = connection.cursor()
-    # Распечатать сведения о PostgreSQL
-  #  print("Информация о сервере PostgreSQL")
-   # print(connection.get_dsn_parameters(), "\n")
-    # Выполнение SQL-запроса
-   # cursor.execute("SELECT version();")
-    # Получить результат
-   # record = cursor.fetchone()
-  #  print("Вы подключены к - ", record, "\n")
     letters = string.ascii_letters
     cursor.execute("truncate  Products CASCADE")
     cursor.execute("truncate  Cost CASCADE")
@@ -37,8 +29,6 @@ try:
         item_tuple = (result_name, result_status, result_quantity, id_of_new_row)
         cursor.execute(insert_query, item_tuple)
         connection.commit()
-       # print("1 запись успешно вставлена")
-       # print(id_of_new_row)
 
     for i in range(30):
         cursor.execute("SELECT * from Cost WHERE ID = %s", (i+1,))
@@ -47,15 +37,7 @@ try:
         cursor.execute("SELECT * from Products WHERE ID = %s", (i + 1,))
         record = cursor.fetchall()
         print("Результат postgres", record)
-      #  insert_query = """SELECT * from Cost WHERE ID = %s"""
-      #  item_tuple = (i + 1)
-       # cursor.execute(insert_query, item_tuple)
 
-
-    # Получить результат
-   # cursor.execute("SELECT * from Cost")
-    #record = cursor.fetchall()
-    #print("Результат", record)
 
 except (Exception, Error) as error:
     print("Ошибка при работе с PostgreSQL", error)
